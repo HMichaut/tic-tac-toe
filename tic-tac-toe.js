@@ -26,6 +26,16 @@ const gameBoard = (() => {
   };
 })();
 
+const Player = (name, token) => {
+  const getName  = () => name;
+  const getToken  = () => token;
+  return {getName, getToken}
+}
+
+const player1 = Player('jim', "X");
+const player2 = Player('jeff', "O");
+const playerArray = [player1, player2]
+
 // console.log(gameBoard.getBoard());
 // gameBoard.play("X", 2, 1);
 // console.log(gameBoard.getBoard());
@@ -104,3 +114,8 @@ let testBoard15 = [[null, null, "X"],
 [null, "X", null], 
 ["X", null, null]];
 console.log(gameBoard.checkIfGameOver(testBoard15, "X") === true);
+
+console.log(player1.getName() === "jim");
+console.log(player1.getToken() === "X");
+console.log(player2.getName() === "jeff");
+console.log(player2.getToken() === "O");
