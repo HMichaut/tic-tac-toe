@@ -17,10 +17,21 @@ const gameBoard = (() => {
     return [0, 1, 2].every(iter => inputBoard[iter][iter] === token) || 
     [0, 1, 2].every(iter => inputBoard[iter][2 - iter] === token);
   }
+  const incorrectInput = (inputBoard, posx, posy) => {
+    return outsideGameboard(posx, posy) || alreadyTaken(inputBoard, posx, posy);
+  }
+  const outsideGameboard = (posx, posy) => {
+    return posx > 3 || posx < 0 || posy > 3 || posy < 0;
+  }
+  const alreadyTaken = (inputBoard, posx, posy) => {
+    return inputBoard[posy][posx] !== null;
+  }
+
   return {
     getBoard,
     play,
-    checkIfGameOver
+    checkIfGameOver,
+    incorrectInput
   };
 })();
 
@@ -34,11 +45,22 @@ const game = (() => {
   let playerArray = [Player('jim', "X"), Player('jeff', "O")];
   const changeTurn = (inputArray) => inputArray = inputArray.reverse();
 
+  const recursivePrompt = () => {
+    let psnx = parseInt(prompt("x"));
+    let psny = parseInt(prompt("y"));
+    if (gameBoard.incorrectInput(gameBoard.getBoard(), psnx, psny)) {
+      return recursivePrompt();
+    } else {
+      return [psnx, psny]
+    }
+  }
+
   const play = () => {
     console.log(gameBoard.getBoard());
     do {
-      let psnx = prompt("x");
-      let psny = prompt("y");
+      posnDuo = recursivePrompt();
+      let psnx = posnDuo[0];
+      let psny = posnDuo[1];
       gameBoard.play(playerArray[0].getToken(), psnx, psny);
       console.log(gameBoard.getBoard());
       changeTurn(playerArray);
