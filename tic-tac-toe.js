@@ -1,10 +1,19 @@
 const gameBoard = (() => {
   let board = [[null, null, null], 
-                 [null, null, null], 
-                 [null, null, null]];
+               [null, null, null], 
+               [null, null, null]];
+  const boardId = [["one", "two", "three"], 
+                   ["four", "five", "six"], 
+                   ["seven", "eight", "nine"]];
   const getBoard = () => board;
   const play = (token, posx, posy) => {
-    board[posy][posx] = token;
+    if (!alreadyTaken(board, posx, posy)) {
+      board[posy][posx] = token;
+      let cellSelected = boardId[posy][posx];
+      let cell = document.getElementById(cellSelected);
+      cell.innerHTML = token;
+      game.changeTurn();
+    }
   }
   const checkIfGameOver = (inputBoard, token) => {
     return checkLines(inputBoard, token) || checkDiagonals(inputBoard, token);
@@ -43,7 +52,7 @@ const Player = (name, token) => {
 
 const game = (() => {
   let playerArray = [Player('jim', "X"), Player('jeff', "O")];
-  const changeTurn = (inputArray) => inputArray = inputArray.reverse();
+  const changeTurn = () => playerArray = playerArray.reverse();
 
   const recursivePrompt = () => {
     let psnx = parseInt(prompt("x"));
@@ -55,25 +64,103 @@ const game = (() => {
     }
   }
 
+  const addLinks = () => {
+    const one = document.getElementById("one");
+    one.addEventListener("click", () => {
+      gameBoard.play(playerArray[0].getToken(), 0, 0);
+      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+        console.log("GAME OVER");
+      }
+    });
+
+    const two = document.getElementById("two");
+    two.addEventListener("click", () => {
+      gameBoard.play(playerArray[0].getToken(), 1, 0);
+      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+        console.log("GAME OVER");
+      }
+    });
+
+    const three = document.getElementById("three");
+    three.addEventListener("click", () => {
+      gameBoard.play(playerArray[0].getToken(), 2, 0);
+      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+        console.log("GAME OVER");
+      }
+    });
+
+    const four = document.getElementById("four");
+    four.addEventListener("click", () => {
+      gameBoard.play(playerArray[0].getToken(), 0, 1);
+      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+        console.log("GAME OVER");
+      }
+    });
+
+    const five = document.getElementById("five");
+    five.addEventListener("click", () => {
+      gameBoard.play(playerArray[0].getToken(), 1, 1);
+      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+        console.log("GAME OVER");
+      }
+    });
+
+    const six = document.getElementById("six");
+    six.addEventListener("click", () => {
+      gameBoard.play(playerArray[0].getToken(), 2, 1);
+      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+        console.log("GAME OVER");
+      }
+    });
+
+    const seven = document.getElementById("seven");
+    seven.addEventListener("click", () => {
+      gameBoard.play(playerArray[0].getToken(), 0, 2);
+      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+        console.log("GAME OVER");
+      }
+    });
+
+    const eight = document.getElementById("eight");
+    eight.addEventListener("click", () => {
+      gameBoard.play(playerArray[0].getToken(), 1, 2);
+      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+        console.log("GAME OVER");
+      }
+    });
+
+    const nine = document.getElementById("nine");
+    nine.addEventListener("click", () => {
+      gameBoard.play(playerArray[0].getToken(), 2, 2);
+      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+        console.log("GAME OVER");
+      }
+    });
+  }
+
   const play = () => {
-    console.log(gameBoard.getBoard());
-    do {
-      posnDuo = recursivePrompt();
-      let psnx = posnDuo[0];
-      let psny = posnDuo[1];
-      gameBoard.play(playerArray[0].getToken(), psnx, psny);
-      console.log(gameBoard.getBoard());
-      changeTurn(playerArray);
-      console.log(playerArray[1].getToken());
-    } while (!gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken()));
+    addLinks();
+    // console.log(gameBoard.getBoard());
+    // do {
+    //   posnDuo = recursivePrompt();
+    //   let psnx = posnDuo[0];
+    //   let psny = posnDuo[1];
+    //   gameBoard.play(playerArray[0].getToken(), psnx, psny);
+    //   console.log(gameBoard.getBoard());
+    //   changeTurn(playerArray);
+    //   console.log(playerArray[1].getToken());
+    // } while (!gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken()));
   }
 
   return {
-    play
+    play,
+    changeTurn
   };
 })();
 
 game.play();
+
+
 // console.log(gameBoard.getBoard());
 
 // const player1 = Player('jim', "X");
