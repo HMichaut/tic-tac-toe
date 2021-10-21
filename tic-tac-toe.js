@@ -6,12 +6,19 @@ const gameBoard = (() => {
                    ["four", "five", "six"], 
                    ["seven", "eight", "nine"]];
   const getBoard = () => board;
+  const getBoardId = () => boardId;
+  const resetBoard = () => {
+    board = [[null, null, null], 
+                 [null, null, null], 
+                 [null, null, null]];
+  }
   const play = (token, posx, posy) => {
     if (!alreadyTaken(board, posx, posy)) {
       board[posy][posx] = token;
       let cellSelected = boardId[posy][posx];
       let cell = document.getElementById(cellSelected);
       cell.innerHTML = token;
+      cell.className = "inactivecell"
       game.changeTurn();
     }
   }
@@ -38,9 +45,11 @@ const gameBoard = (() => {
 
   return {
     getBoard,
+    getBoardId,
     play,
     checkIfGameOver,
-    incorrectInput
+    incorrectInput,
+    resetBoard
   };
 })();
 
@@ -54,13 +63,27 @@ const game = (() => {
   let playerArray = [Player('jim', "X"), Player('jeff', "O")];
   const changeTurn = () => playerArray = playerArray.reverse();
 
-  const recursivePrompt = () => {
-    let psnx = parseInt(prompt("x"));
-    let psny = parseInt(prompt("y"));
-    if (gameBoard.incorrectInput(gameBoard.getBoard(), psnx, psny)) {
-      return recursivePrompt();
-    } else {
-      return [psnx, psny]
+  // const recursivePrompt = () => {
+  //   let psnx = parseInt(prompt("x"));
+  //   let psny = parseInt(prompt("y"));
+  //   if (gameBoard.incorrectInput(gameBoard.getBoard(), psnx, psny)) {
+  //     return recursivePrompt();
+  //   } else {
+  //     return [psnx, psny]
+  //   }
+  // }
+  const gameOver = () => {
+    let wrapper = document.getElementById("wrapper");
+    // wrapper.style.visibility = "hidden";
+    gameBoard.resetBoard();
+    let boardId = gameBoard.getBoardId();
+    for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        let cellId =  boardId[y][x];
+        let cell = document.getElementById(cellId);
+        cell.innerHTML = null;
+        cell.className = "cell";
+      }  
     }
   }
 
@@ -69,7 +92,7 @@ const game = (() => {
     one.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 0, 0);
       if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        console.log("GAME OVER");
+        gameOver();
       }
     });
 
@@ -77,7 +100,7 @@ const game = (() => {
     two.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 1, 0);
       if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        console.log("GAME OVER");
+        gameOver();
       }
     });
 
@@ -85,7 +108,7 @@ const game = (() => {
     three.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 2, 0);
       if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        console.log("GAME OVER");
+        gameOver();
       }
     });
 
@@ -93,7 +116,7 @@ const game = (() => {
     four.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 0, 1);
       if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        console.log("GAME OVER");
+        gameOver();
       }
     });
 
@@ -101,7 +124,7 @@ const game = (() => {
     five.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 1, 1);
       if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        console.log("GAME OVER");
+        gameOver();
       }
     });
 
@@ -109,7 +132,7 @@ const game = (() => {
     six.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 2, 1);
       if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        console.log("GAME OVER");
+        gameOver();
       }
     });
 
@@ -117,7 +140,7 @@ const game = (() => {
     seven.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 0, 2);
       if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        console.log("GAME OVER");
+        gameOver();
       }
     });
 
@@ -125,7 +148,7 @@ const game = (() => {
     eight.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 1, 2);
       if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        console.log("GAME OVER");
+        gameOver();
       }
     });
 
@@ -133,7 +156,7 @@ const game = (() => {
     nine.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 2, 2);
       if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        console.log("GAME OVER");
+        gameOver();
       }
     });
   }

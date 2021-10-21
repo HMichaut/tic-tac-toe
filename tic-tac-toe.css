@@ -1,4 +1,4 @@
-.wrapper {
+#wrapper {
   display: grid;
   grid-template-columns: repeat(3, 200px);
   grid-gap: 10px;
@@ -8,11 +8,25 @@
   background-color: green;
   border-style: solid;
   border-color: darkgreen;
+  text-align: center;
+  line-height: 200px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 100px;
 }
 
 .cell:hover {
-  background-color: lightgreen;
+  background-color: lightgreen !important;
 }
+.inactivecell {
+  background-color: grey;
+  border-style: solid;
+  border-color: black;
+  text-align: center;
+  line-height: 200px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 100px;
+}
+
 .one {
   grid-column: 1;
   grid-row: 1;
