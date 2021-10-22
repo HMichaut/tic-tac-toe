@@ -60,8 +60,20 @@ const Player = (name, token) => {
 }
 
 const game = (() => {
-  let playerArray = [Player('jim', "X"), Player('jeff', "O")];
+  const randomizeArray = (array) => {
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
+  }
+  let playerArray = randomizeArray([Player('jim', "X"), Player('jeff', "O")]);
+  console.log(playerArray);
   const changeTurn = () => playerArray = playerArray.reverse();
+  const randomTurn = () => PlayerArray = randomizeArray(playerArray);
+
 
   // const recursivePrompt = () => {
   //   let psnx = parseInt(prompt("x"));
@@ -99,6 +111,7 @@ const game = (() => {
   const resetGame = () => {
     let resetButton = document.getElementById("resetbutton");
     resetButton.remove();
+    randomTurn()
     wrapper.style.visibility = "visible";
   }
 
@@ -192,7 +205,8 @@ const game = (() => {
 
   return {
     play,
-    changeTurn
+    changeTurn,
+    randomTurn
   };
 })();
 
