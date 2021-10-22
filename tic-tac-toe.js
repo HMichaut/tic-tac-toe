@@ -74,7 +74,7 @@ const game = (() => {
   // }
   const gameOver = () => {
     let wrapper = document.getElementById("wrapper");
-    // wrapper.style.visibility = "hidden";
+    wrapper.style.visibility = "hidden";
     gameBoard.resetBoard();
     let boardId = gameBoard.getBoardId();
     for (let y = 0; y < 3; y++) {
@@ -85,6 +85,21 @@ const game = (() => {
         cell.className = "cell";
       }  
     }
+    let resetdiv = document.getElementById("reset");
+    let resetButton = document.createElement("button");
+    resetButton.id = "resetbutton"
+    resetButton.setAttribute("type", "button");
+    resetButton.innerHTML = "New Game";
+    resetButton.addEventListener("click", () => {
+      resetGame();
+    });
+    resetdiv.appendChild(resetButton);
+  }
+
+  const resetGame = () => {
+    let resetButton = document.getElementById("resetbutton");
+    resetButton.remove();
+    wrapper.style.visibility = "visible";
   }
 
   const addLinks = () => {

@@ -63,3 +63,14 @@
   grid-column: 3;
   grid-row: 3;
 }
+button {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  line-height: 30px;
+  font-weight: bold;
+  background: green;
+  border: none;
+}
+button:hover {
+  background: lightgreen;
+}
