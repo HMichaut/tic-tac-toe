@@ -53,10 +53,12 @@ const gameBoard = (() => {
   };
 })();
 
-const Player = (name, token) => {
+const Player = (name, token, score) => {
   const getName  = () => name;
   const getToken  = () => token;
-  return {getName, getToken}
+  const getScore  = () => score;
+  const updateScore = () => score++;
+  return {getName, getToken, getScore, updateScore}
 }
 
 const game = (() => {
@@ -69,21 +71,12 @@ const game = (() => {
     }
     return array;
   }
-  let playerArray = randomizeArray([Player('jim', "X"), Player('jeff', "O")]);
+  let initialPlayerArray = [Player('jim', "X", 0), Player('jeff', "O", 0)];
+  let playerArray = randomizeArray(initialPlayerArray.slice(0));
   console.log(playerArray);
   const changeTurn = () => playerArray = playerArray.reverse();
   const randomTurn = () => PlayerArray = randomizeArray(playerArray);
 
-
-  // const recursivePrompt = () => {
-  //   let psnx = parseInt(prompt("x"));
-  //   let psny = parseInt(prompt("y"));
-  //   if (gameBoard.incorrectInput(gameBoard.getBoard(), psnx, psny)) {
-  //     return recursivePrompt();
-  //   } else {
-  //     return [psnx, psny]
-  //   }
-  // }
   const gameOver = () => {
     let wrapper = document.getElementById("wrapper");
     wrapper.style.visibility = "hidden";
@@ -115,82 +108,92 @@ const game = (() => {
     wrapper.style.visibility = "visible";
   }
 
+  const gameCheck = () => {
+    if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+      playerArray[1].updateScore();
+
+      const scorePlayer1 = document.getElementById("score-player-1");
+      scorePlayer1.innerHTML = initialPlayerArray[0].getName() + " : " + initialPlayerArray[0].getScore();
+  
+      const scorePlayer2 = document.getElementById("score-player-2");
+      scorePlayer2.innerHTML = initialPlayerArray[1].getName() + " : " + initialPlayerArray[1].getScore();
+
+      gameOver();
+    }
+  }
+
   const addLinks = () => {
     const one = document.getElementById("one");
     one.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 0, 0);
-      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        gameOver();
-      }
+      gameCheck();
     });
 
     const two = document.getElementById("two");
     two.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 1, 0);
-      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        gameOver();
-      }
+      gameCheck();
     });
 
     const three = document.getElementById("three");
     three.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 2, 0);
-      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        gameOver();
-      }
+      gameCheck();
     });
 
     const four = document.getElementById("four");
     four.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 0, 1);
-      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        gameOver();
-      }
+      gameCheck();
     });
 
     const five = document.getElementById("five");
     five.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 1, 1);
-      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        gameOver();
-      }
+      gameCheck();
     });
 
     const six = document.getElementById("six");
     six.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 2, 1);
-      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        gameOver();
-      }
+      gameCheck();
     });
 
     const seven = document.getElementById("seven");
     seven.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 0, 2);
-      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        gameOver();
-      }
+      gameCheck();
     });
 
     const eight = document.getElementById("eight");
     eight.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 1, 2);
-      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        gameOver();
-      }
+      gameCheck();
     });
 
     const nine = document.getElementById("nine");
     nine.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 2, 2);
-      if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
-        gameOver();
-      }
+      gameCheck();
     });
+  }
+
+  const addPlayerScores = () => {
+    const scorediv = document.getElementById("score");
+    const scorePlayer1 = scorediv.appendChild(document.createElement('p'));
+    scorePlayer1.className = "score-player";
+    scorePlayer1.id = "score-player-1";
+    scorePlayer1.innerHTML = initialPlayerArray[0].getName() + " : " + initialPlayerArray[0].getScore();
+
+    const scorePlayer2 = scorediv.appendChild(document.createElement('p'));
+    scorePlayer2.className = "score-player";
+    scorePlayer2.id = "score-player-2";
+    scorePlayer2.innerHTML = initialPlayerArray[1].getName() + " : " + initialPlayerArray[1].getScore();
   }
 
   const play = () => {
     addLinks();
+    addPlayerScores();
     // console.log(gameBoard.getBoard());
     // do {
     //   posnDuo = recursivePrompt();
