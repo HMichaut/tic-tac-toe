@@ -22,6 +22,9 @@ const gameBoard = (() => {
       game.changeTurn();
     }
   }
+  const checkIfGameDraw = (inputBoard) => {
+    return inputBoard.every(line => line.every(cell => cell !== null));
+  }
   const checkIfGameOver = (inputBoard, token) => {
     return checkLines(inputBoard, token) || checkDiagonals(inputBoard, token);
   }
@@ -48,6 +51,7 @@ const gameBoard = (() => {
     getBoardId,
     play,
     checkIfGameOver,
+    checkIfGameDraw,
     incorrectInput,
     resetBoard
   };
@@ -76,11 +80,16 @@ const game = (() => {
   console.log(playerArray);
   const changeTurn = () => playerArray = playerArray.reverse();
   const randomTurn = () => PlayerArray = randomizeArray(playerArray);
+  const gameDraw = () => {
+    if (gameBoard.checkIfGameDraw(gameBoard.getBoard())) {
+      gameOver();
+    }
+  }
 
   const gameOver = () => {
     let wrapper = document.getElementById("wrapper");
     wrapper.style.visibility = "hidden";
-    gameBoard.resetBoard();
+    
     let boardId = gameBoard.getBoardId();
     for (let y = 0; y < 3; y++) {
       for (let x = 0; x < 3; x++) {
@@ -91,6 +100,19 @@ const game = (() => {
       }  
     }
     let resetdiv = document.getElementById("reset");
+    if (gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken())) {
+      let gameOverText = document.createElement("p");
+      gameOverText.id = "game-over-text"
+      gameOverText.innerHTML = playerArray[1].getName() + " Wins !";
+      resetdiv.appendChild(gameOverText);
+    } else {
+      let gameOverText = document.createElement("p");
+      gameOverText.id = "game-over-text"
+      gameOverText.innerHTML = "Draw !";
+      resetdiv.appendChild(gameOverText);
+    }
+    gameBoard.resetBoard();
+
     let resetButton = document.createElement("button");
     resetButton.id = "resetbutton"
     resetButton.setAttribute("type", "button");
@@ -104,6 +126,8 @@ const game = (() => {
   const resetGame = () => {
     let resetButton = document.getElementById("resetbutton");
     resetButton.remove();
+    let gameOverText = document.getElementById("game-over-text");
+    gameOverText.remove();
     randomTurn()
     wrapper.style.visibility = "visible";
   }
@@ -127,54 +151,63 @@ const game = (() => {
     one.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 0, 0);
       gameCheck();
+      gameDraw();
     });
 
     const two = document.getElementById("two");
     two.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 1, 0);
       gameCheck();
+      gameDraw();
     });
 
     const three = document.getElementById("three");
     three.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 2, 0);
       gameCheck();
+      gameDraw();
     });
 
     const four = document.getElementById("four");
     four.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 0, 1);
       gameCheck();
+      gameDraw();
     });
 
     const five = document.getElementById("five");
     five.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 1, 1);
       gameCheck();
+      gameDraw();
     });
 
     const six = document.getElementById("six");
     six.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 2, 1);
       gameCheck();
+      gameDraw();
     });
 
     const seven = document.getElementById("seven");
     seven.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 0, 2);
       gameCheck();
+      gameDraw();
     });
 
     const eight = document.getElementById("eight");
     eight.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 1, 2);
       gameCheck();
+      gameDraw();
     });
 
     const nine = document.getElementById("nine");
     nine.addEventListener("click", () => {
       gameBoard.play(playerArray[0].getToken(), 2, 2);
       gameCheck();
+      gameDraw();
     });
   }
 
