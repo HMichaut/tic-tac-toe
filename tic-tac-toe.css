@@ -4,6 +4,7 @@ h1 {
   text-align: center;
 }
 #wrapper {
+  visibility: hidden;
   display: grid;
   grid-template-columns: repeat(3, 200px);
   grid-gap: 10px;

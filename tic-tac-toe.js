@@ -77,7 +77,6 @@ const game = (() => {
   }
   let initialPlayerArray = [Player('jim', "X", 0), Player('jeff', "O", 0)];
   let playerArray = randomizeArray(initialPlayerArray.slice(0));
-  console.log(playerArray);
   const changeTurn = () => playerArray = playerArray.reverse();
   const randomTurn = () => PlayerArray = randomizeArray(playerArray);
   const gameDraw = () => {
@@ -224,24 +223,95 @@ const game = (() => {
     scorePlayer2.innerHTML = initialPlayerArray[1].getName() + " : " + initialPlayerArray[1].getScore();
   }
 
-  const play = () => {
-    addLinks();
+  const startGame = () => {
+    wrapper.style.visibility = "visible";
     addPlayerScores();
-    // console.log(gameBoard.getBoard());
-    // do {
-    //   posnDuo = recursivePrompt();
-    //   let psnx = posnDuo[0];
-    //   let psny = posnDuo[1];
-    //   gameBoard.play(playerArray[0].getToken(), psnx, psny);
-    //   console.log(gameBoard.getBoard());
-    //   changeTurn(playerArray);
-    //   console.log(playerArray[1].getToken());
-    // } while (!gameBoard.checkIfGameOver(gameBoard.getBoard(), playerArray[1].getToken()));
+  }
+
+  function deleteForm() {
+    let new_form = document.body.appendChild(document.createElement('div'));
+    new_form.setAttribute('id', 'reset');
+    let old_form = document.getElementById("reset");
+    old_form.parentNode.replaceChild(new_form, old_form);
+  }
+  
+  const createForm = () => {
+    let down = document.getElementById("reset");
+                
+    // Create a break line element
+    let br = document.createElement("br"); 
+    function frm_crt_fun() {
+                  
+      // Create a form synamically
+      let form = document.createElement("form");
+  
+      let label_name_1 = document.createElement("Label");
+      label_name_1.innerHTML="Player 1 Name";
+  
+      // Create an input element for title
+      let frm_name_1 = document.createElement("input");
+      frm_name_1.setAttribute("type", "text");
+      frm_name_1.setAttribute("name", "name_1");
+  
+      let label_name_2 = document.createElement("Label");
+      label_name_2.innerHTML="Player 2 Name";
+  
+      // Create an input element for author
+      let frm_name_2 = document.createElement("input");
+      frm_name_2.setAttribute("type", "text");
+      frm_name_2.setAttribute("name", "name_2");
+  
+      // create a submit button
+      let s = document.createElement("button");
+      
+      s.setAttribute("type", "button");
+      s.innerHTML = "Start Game";
+                    
+      // Append the full name input to the form
+      form.appendChild(label_name_1);
+      form.appendChild(br.cloneNode()); 
+      form.appendChild(frm_name_1); 
+        
+      // Inserting a line break
+      form.appendChild(br.cloneNode()); 
+      form.appendChild(br.cloneNode()); 
+        
+      // Append the DOB to the form
+      form.appendChild(label_name_2);
+      form.appendChild(br.cloneNode()); 
+      form.appendChild(frm_name_2); 
+  
+      // Inserting a line break
+      form.appendChild(br.cloneNode()); 
+      form.appendChild(br.cloneNode()); 
+        
+      // Append the submit button to the form
+      form.appendChild(s);
+      s.addEventListener("click", () => {
+        createPlayerArray(frm_name_1.value, frm_name_2.value);
+        startGame();
+        deleteForm();
+      });
+  
+      down.appendChild(form);
+    }
+    frm_crt_fun()
+  }
+
+  const createPlayerArray = (name1, name2) => {
+    initialPlayerArray = [Player(name1, "X", 0), Player(name2, "O", 0)];
+    playerArray = randomizeArray(initialPlayerArray.slice(0));
+  }
+
+  const play = () => {
+    createForm();
+    addLinks();
   }
 
   return {
     play,
     changeTurn,
+    createPlayerArray,
     randomTurn
   };
 })();
