@@ -57,12 +57,13 @@ const gameBoard = (() => {
   };
 })();
 
-const Player = (name, token, score) => {
+const Player = (id, name, token, score) => {
+  const getId  = () => id;
   const getName  = () => name;
   const getToken  = () => token;
   const getScore  = () => score;
   const updateScore = () => score++;
-  return {getName, getToken, getScore, updateScore}
+  return {getId, getName, getToken, getScore, updateScore}
 }
 
 const game = (() => {
@@ -75,9 +76,24 @@ const game = (() => {
     }
     return array;
   }
-  let initialPlayerArray = [Player('jim', "X", 0), Player('jeff', "O", 0)];
+  let initialPlayerArray = [Player(1, 'jim', "X", 0), Player(2, 'jeff', "O", 0)];
   let playerArray = randomizeArray(initialPlayerArray.slice(0));
-  const changeTurn = () => playerArray = playerArray.reverse();
+  
+  const changeTurn = () => {
+    playerArray = playerArray.reverse();
+    let scorePlayer;
+    let otherPlayer;
+    console.log(playerArray[0].getId());
+    if (playerArray[0].getId() === 1) {
+      scorePlayer = document.getElementById("score-player-1");
+      otherPlayer = document.getElementById("score-player-2");
+    } else {
+      scorePlayer = document.getElementById("score-player-2");
+      otherPlayer = document.getElementById("score-player-1");
+    };
+    scorePlayer.style.borderStyle = "solid";
+    otherPlayer.style.borderStyle = "hidden";
+  }
   const randomTurn = () => PlayerArray = randomizeArray(playerArray);
   const gameDraw = () => {
     if (gameBoard.checkIfGameDraw(gameBoard.getBoard())) {
@@ -112,6 +128,12 @@ const game = (() => {
     }
     gameBoard.resetBoard();
 
+    scorePlayer = document.getElementById("score-player-1");
+    otherPlayer = document.getElementById("score-player-2");
+
+    scorePlayer.style.borderStyle = "hidden";
+    otherPlayer.style.borderStyle = "hidden";
+
     let resetButton = document.createElement("button");
     resetButton.id = "resetbutton"
     resetButton.setAttribute("type", "button");
@@ -129,6 +151,15 @@ const game = (() => {
     gameOverText.remove();
     randomTurn()
     wrapper.style.visibility = "visible";
+    if (playerArray[0].getId() === 1) {
+      scorePlayer = document.getElementById("score-player-1");
+      otherPlayer = document.getElementById("score-player-2");
+    } else {
+      scorePlayer = document.getElementById("score-player-2");
+      otherPlayer = document.getElementById("score-player-1");
+    };
+    scorePlayer.style.borderStyle = "solid";
+    otherPlayer.style.borderStyle = "hidden";
   }
 
   const gameCheck = () => {
@@ -226,6 +257,15 @@ const game = (() => {
   const startGame = () => {
     wrapper.style.visibility = "visible";
     addPlayerScores();
+    if (playerArray[0].getId() === 1) {
+      scorePlayer = document.getElementById("score-player-1");
+      otherPlayer = document.getElementById("score-player-2");
+    } else {
+      scorePlayer = document.getElementById("score-player-2");
+      otherPlayer = document.getElementById("score-player-1");
+    };
+    scorePlayer.style.borderStyle = "solid";
+    otherPlayer.style.borderStyle = "hidden";
   }
 
   function deleteForm() {
@@ -299,7 +339,7 @@ const game = (() => {
   }
 
   const createPlayerArray = (name1, name2) => {
-    initialPlayerArray = [Player(name1, "X", 0), Player(name2, "O", 0)];
+    initialPlayerArray = [Player(1, name1, "X", 0), Player(2, name2, "O", 0)];
     playerArray = randomizeArray(initialPlayerArray.slice(0));
   }
 
@@ -317,94 +357,3 @@ const game = (() => {
 })();
 
 game.play();
-
-
-// console.log(gameBoard.getBoard());
-
-// const player1 = Player('jim', "X");
-// const player2 = Player('jeff', "O");
-// const playerArray = [Player('jim', "X"), Player('jeff', "O")];
-
-// console.log(gameBoard.getBoard());
-// gameBoard.play("X", 2, 1);
-// console.log(gameBoard.getBoard());
-
-// let testBoard1 = [["X", "X", "X"], 
-// [null, null, null], 
-// [null, null, null]];
-// console.log(gameBoard.checkIfGameOver(testBoard1, "X") === true);
-
-// let testBoard2 = [[null, null, null], 
-// ["X", "X", "X"], 
-// [null, null, null]];
-// console.log(gameBoard.checkIfGameOver(testBoard2, "X") === true);
-
-// let testBoard3 = [[null, null, null], 
-// [null, null, null], 
-// ["X", "X", "X"]];
-// console.log(gameBoard.checkIfGameOver(testBoard3, "X") === true);
-
-// let testBoard4 = [["X", null, null], 
-// ["X", null, null], 
-// ["X", null, null]];
-// console.log(gameBoard.checkIfGameOver(testBoard4, "X") === true);
-
-// let testBoard5 = [[null, "X", null], 
-// [null, "X", null], 
-// [null, "X", null]];
-// console.log(gameBoard.checkIfGameOver(testBoard5, "X") === true);
-
-// let testBoard6 = [[null, null, "X"], 
-// [null, null, "X"], 
-// [null, null, "X"]];
-// console.log(gameBoard.checkIfGameOver(testBoard6, "X") === true);
-
-// let testBoard7 = [["X", null, "X"], 
-// [null, null, null], 
-// [null, null, null]];
-// console.log(gameBoard.checkIfGameOver(testBoard7, "X") === false);
-
-// let testBoard8 = [[null, null, null], 
-// ["X", "X", null], 
-// [null, null, null]];
-// console.log(gameBoard.checkIfGameOver(testBoard8, "X") === false);
-
-// let testBoard9 = [[null, null, null], 
-// [null, null, null], 
-// [null, "X", "X"]];
-// console.log(gameBoard.checkIfGameOver(testBoard9, "X") === false);
-
-// let testBoard10 = [[null, null, null], 
-// ["X", null, null], 
-// ["X", null, null]];
-// console.log(gameBoard.checkIfGameOver(testBoard10, "X") === false);
-
-// let testBoard11 = [[null, "X", null], 
-// [null, null, null], 
-// [null, "X", null]];
-// console.log(gameBoard.checkIfGameOver(testBoard11, "X") === false);
-
-// let testBoard12 = [[null, null, "X"], 
-// [null, null, "X"], 
-// [null, null, null]];
-// console.log(gameBoard.checkIfGameOver(testBoard12, "X") === false);
-
-// let testBoard13 = [[null, null, "X"], 
-// [null, null, "X"], 
-// [null, "X", null]];
-// console.log(gameBoard.checkIfGameOver(testBoard13, "X") === false);
-
-// let testBoard14 = [["X", null, null], 
-// [null, "X", null], 
-// [null, null, "X"]];
-// console.log(gameBoard.checkIfGameOver(testBoard14, "X") === true);
-
-// let testBoard15 = [[null, null, "X"], 
-// [null, "X", null], 
-// ["X", null, null]];
-// console.log(gameBoard.checkIfGameOver(testBoard15, "X") === true);
-
-// console.log(player1.getName() === "jim");
-// console.log(player1.getToken() === "X");
-// console.log(player2.getName() === "jeff");
-// console.log(player2.getToken() === "O");
